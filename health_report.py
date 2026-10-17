@@ -1,7 +1,7 @@
 import sys
 
 if len(sys.argv) < 2:
-    print("Usage: <absolute path>/health_report.py <logfile>", file=sys.stderr)
+    print("Usage: python3 health_report.py <logfile>", file=sys.stderr)
     sys.exit(1)
 
 log_path = sys.argv[1]
@@ -27,7 +27,7 @@ with open(log_path) as f:
         elif len(split) < 3:
             print(f"Unexpected line length at line {count} {split}", file=sys.stderr)
         else:
-             print(f"Unexpected line at line {count}", file=sys.stderr)
+            print(f"Unexpected line at line {count}", file=sys.stderr)
 
 
 if success + error > 0:

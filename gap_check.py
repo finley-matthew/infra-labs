@@ -1,9 +1,8 @@
 import sys
-from datetime import datetime
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 if len(sys.argv) < 2:
-    print("Usage: <absolute path>/gap_check.py <logfile>", file=sys.stderr)
+    print("Usage: python3 gap_check.py <logfile>", file=sys.stderr)
     sys.exit(1)
 
 log_path = sys.argv[1]
@@ -15,21 +14,17 @@ with open(log_path) as f:
 
 first = sorted(seen)[0]
 last = sorted(seen)[-1]
-print(first, last)
 
 start = datetime.strptime(first, "%Y-%m-%d %H")
 end = datetime.strptime(last, "%Y-%m-%d %H")
-print(start, end)
 
 expected = set()
 current = start
 
 while current <= end:
     expected.add(current.strftime("%Y-%m-%d %H"))
-    current += timedelta(hours = 1)
-
-print(len(expected))
+    current += timedelta(hours=1)
 
 gaps = expected - seen
-print(sorted(gaps))
-print(len(gaps))
+print(f"The following timestamps are missing logs: {sorted(gaps)}")
+print(f"{len(gaps)} gaps found in {sys.argv[1]}")

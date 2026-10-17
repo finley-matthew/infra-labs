@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 if [ -z "$1" ];
-then echo "Usage: ./errors_by_type.sh <logfile>"
+then echo "Usage: ./errors_by_type.sh <logfile>" >&2
 exit 1
 fi
 
