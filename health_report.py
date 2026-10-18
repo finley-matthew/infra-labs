@@ -23,7 +23,8 @@ with open(log_path) as f:
                     errors_by_type[split[3]] = 1
                 error += 1
             else:
-                print(f"Unexpected level at line {count} '{split[2]}' log discarded.", file=sys.stderr)
+                print(f"Unexpected level at line {count} ({split[2]}) log discarded.",
+                      file=sys.stderr)
         elif len(split) < 3:
             print(f"Unexpected line length at line {count} {split}", file=sys.stderr)
         else:
