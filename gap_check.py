@@ -9,8 +9,12 @@ log_path = sys.argv[1]
 
 seen = set()
 with open(log_path) as f:
-    for line in f:
-        seen.add(line[:13])
+    for count, line in enumerate(f, 1):
+        split = line.split()
+        if len(split) > 3:
+            seen.add(line[:13])
+        else:
+            print(f"Unexpected content on line {count}, skipping line.", file=sys.stderr)
 
 first = sorted(seen)[0]
 last = sorted(seen)[-1]
