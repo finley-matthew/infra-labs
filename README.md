@@ -67,6 +67,14 @@ Each write-up follows the same structure: summary, symptom, investigation, root 
 | 2026-10-17 | [Gold API read timeout](incidents/2026-10-17-gold-api-read-timeout.md) | P3 | Resolved |
 | 2026-10-18 | [gap_check.py crashed on a malformed log line](incidents/2026-10-18-gap-check-crash-on-junk-line.md) | P3 | Mitigated, follow-up open |
 
+## Patching
+
+Patches follow the [apt patching runbook](runbooks/apt-patching.md). Each patch window gets one row here.
+
+| Date | Host | Change | Held back | Result |
+|---|---|---|---|---|
+| 2026-10-19 | Desktop (WSL) | 50 packages upgraded, 0 removed. `tzdata` (2026c → 2026e) first as a single-package trial with the old version saved for rollback, then the other 49 after a full WSL snapshot. Maintenance window 15:03–15:15 | 2 (phased updates) | Success, no restart needed |
+
 ## Issue tracking
 
 Faults are tracked as [GitHub Issues](https://github.com/finley-matthew/infra-labs/issues?q=is%3Aissue), each labelled with a priority and a target resolution time:
@@ -91,6 +99,5 @@ There are no users other than me, so these are targets I set myself in order of 
 - Merge gap detection into `health_report.py`, and report outages as time ranges rather than lists of hours.
 - Catch an outage that's still in progress at the end of the log.
 - Break-fix labs on a systemd service (stop it, misconfigure it, diagnose it with `systemctl` and `journalctl`), each logged as an Issue with a write-up.
-- An `apt` patching runbook: check, patch, verify the version, roll back.
 - A software RAID lab with `mdadm` on a VM: build an array, fail a disk, rebuild it.
 - `pytest` tests for the tools, run by GitHub Actions on every push.
