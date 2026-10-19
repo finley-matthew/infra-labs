@@ -1,8 +1,6 @@
 # infra-labs
 
-Operations work on my [market-tracker](https://github.com/finley-matthew/market-tracker) service: tools that check the health of its logs and find missed runs, write-ups of real faults, and an issue tracker with priorities and target resolution times.
-
-market-tracker is the service; this repo is what I use to run, monitor and fix it.
+The tools and notes I use to run and monitor my [market-tracker](https://github.com/finley-matthew/market-tracker) project: scripts that check its logs and find missed runs, write-ups of real faults, a patching runbook, and an issue tracker with priorities.
 
 ## Tools
 
@@ -49,17 +47,17 @@ The following timestamps are missing logs: ['2026-10-06 17', '2026-10-06 18', ..
 
 On the real log, this found a six-hour gap on 13 October (see [Incidents](#incidents)).
 
-**Known limits:** it only checks between the first and last entry, so an outage still in progress at the end of the log isn't reported. A junk line with four or more fields, or an empty file, still causes a crash; this is tracked as an open issue.
+Known limits: it only checks between the first and last entry, so an outage still in progress at the end of the log isn't reported. A junk line with four or more fields, or an empty file, still causes a crash; this is tracked as an open issue.
 
 ## Testing with known answers
 
-[`sample.log`](sample.log) is 12 lines in the production format, written so the right answers are known in advance: 7 successful runs, 5 errors (3 `Timeout`, 1 `ConnectionError`, 1 `ServerError`), and a 15-hour overnight gap. After every change, all three tools are re-run on it and the output is checked against those numbers.
+[`sample.log`](sample.log) is 12 lines in the production format, written so I know the right answers in advance: 7 successful runs, 5 errors (3 `Timeout`, 1 `ConnectionError`, 1 `ServerError`), and a 15-hour overnight gap. After every change I re-run all three tools on it and check the output against those numbers.
 
-`health_report.py` was also tested against deliberately broken input: an empty file, a blank line, an unknown log level (`WARNING`), a line that's too short, bad lines in the middle of the file (to check the reported line numbers stay correct), a single run, and a file containing only bad lines.
+I also tested `health_report.py` against bad input: an empty file, a blank line, an unknown log level (`WARNING`), a line that's too short, bad lines in the middle of the file (to check the reported line numbers stay correct), a single run, and a file containing only bad lines.
 
 ## Incidents
 
-Each write-up follows the same structure: summary, symptom, investigation, root cause, fix, prevention. They were written retrospectively, shortly after each fault.
+Each write-up covers the summary, symptom, investigation, root cause, fix and prevention. I wrote them up shortly after each fault.
 
 | Date | Incident | Priority | Status |
 |---|---|---|---|
@@ -85,7 +83,7 @@ Faults are tracked as [GitHub Issues](https://github.com/finley-matthew/infra-la
 | P2 | Service degraded | 3 days |
 | P3 | Minor fault or tooling issue | 7 days |
 
-There are no users other than me, so these are targets I set myself in order of P1/P2/P3 priority.
+I'm the only user, so these are my own targets rather than SLAs, but they decide what I fix first.
 
 ## Conventions
 

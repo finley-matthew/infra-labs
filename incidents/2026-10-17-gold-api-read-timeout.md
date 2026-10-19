@@ -22,14 +22,14 @@ of 57 (98.2% success). The failing line was:
 
 ## Investigation
 
-1. **Confirmed the counts by hand.** `grep -c INFO` returned 56 and
+1. Confirmed the counts by hand. `grep -c INFO` returned 56 and
    `grep -c ERROR` returned 1, matching the report.
-2. **Identified the type of timeout.** The script logs the exception
+2. Identified the type of timeout. The script logs the exception
    class name. `ReadTimeout` means the connection to the server
    succeeded but no response arrived within the 5-second timeout.
    A `ConnectTimeout` would have meant the connection itself failed,
    pointing at my network or DNS rather than the server.
-3. **Checked for recovery.** The 02:00 entry was a normal `INFO` line,
+3. Checked for recovery. The 02:00 entry was a normal `INFO` line,
    so the service recovered by itself. A missing line after the error
    would have meant it stopped running altogether, which "no errors"
    alone wouldn't show.
@@ -42,14 +42,14 @@ outside my control.
 
 ## Fix
 
-None needed. The script handled the error as designed: it logged the
-failure type and exited, and the next scheduled run succeeded.
+None needed. The script did what it should: it logged the failure type and
+exited, and the next scheduled run succeeded.
 
 ## Prevention
 
-- **Considered:** a single retry after a short delay, which would
+- Considered: a single retry after a short delay, which would
   likely have recovered this data point.
-- **Considered:** alerting only after two or more consecutive
+- Considered: alerting only after two or more consecutive
   failures, so one-off timeouts like this don't cause noise.
-- **Kept:** the 5-second timeout, so a slow server can't leave the
+- Kept: the 5-second timeout, so a slow server can't leave the
   script hanging.

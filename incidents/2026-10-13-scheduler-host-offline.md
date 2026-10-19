@@ -23,18 +23,18 @@ were no error lines in that window either: the runs were simply absent.
 
 ## Investigation
 
-1. **Ruled out a script crash.** I compared line counts in `cron.log`
+1. Ruled out a script crash. I compared line counts in `cron.log`
    (cron's output from each run) and `tracker.log` (the script's own
    log). They matched, and neither had anything in the gap. A crashing
    script would still have been started by cron and left a traceback in
    `cron.log`, so cron was not running the job at all.
-2. **Ruled out a bad crontab entry.** A broken schedule line would fail
+2. Ruled out a bad crontab entry. A broken schedule line would fail
    every hour, not for one six-hour window followed by normal runs.
-3. **Checked when the system last started.** `uptime -s` inside WSL
+3. Checked when the system last started. `uptime -s` inside WSL
    returned `2026-10-13 10:21:08`, which matches the end of the gap: the
    first run after start-up was 11:00. The machine is normally shut
    down shortly after 04:00.
-4. **Confirmed independently.** On 14 October I wrote `gap_check.py`,
+4. Confirmed independently. On 14 October I wrote `gap_check.py`,
    which builds the full list of expected hourly runs between the first
    and last log entries and compares it with what was actually logged.
    Result: 35 expected, 29 logged, 6 missing, all on 13 October from
@@ -54,13 +54,13 @@ six missed data points could not be recovered.
 
 ## Prevention
 
-- **Done:** `gap_check.py` (in this repo) now detects missing hourly
+- Done: `gap_check.py` (in this repo) now detects missing hourly
   runs, so a gap like this is found by a tool rather than by eye.
-- **Planned:** move the job to an always-on host (an AWS EC2 instance)
+- Planned: move the job to an always-on host (an AWS EC2 instance)
   so it doesn't depend on my PC being on.
-- **Planned:** run the job as a systemd timer with `Persistent=true`,
+- Planned: run the job as a systemd timer with `Persistent=true`,
   which runs a missed job once at start-up (it does not backfill every
   missed hour).
-- **Known limit of the detector:** `gap_check.py` only checks between
+- Known limit of the detector: `gap_check.py` only checks between
   the first and last log entry, so an outage still in progress at the
   end of the log isn't reported yet.
